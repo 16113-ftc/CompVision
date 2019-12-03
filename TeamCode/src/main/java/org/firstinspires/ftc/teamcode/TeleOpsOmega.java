@@ -78,9 +78,12 @@ public class TeleOpsOmega extends LinearOpMode
 
             //gamepad2.dpad_up is moving the claw up when you press up on the dpad
             if (gamepad2.dpad_up) {
-                clawDC.setPower(0.5);
+                clawDC.setPower(1);
                 telemetry.addData("G2 D-Up", gamepad1.dpad_up);
                 telemetry.update();
+            }
+            else {
+                clawDC.setPower(0);
             }
 
             //gamepad2.dpad_down is moving the claw down when you press down on the dpad
@@ -89,18 +92,36 @@ public class TeleOpsOmega extends LinearOpMode
                 telemetry.addData("G2 D-Down", gamepad1.dpad_down);
                 telemetry.update();
             }
+            else {
+                clawDC.setPower(0);
+            }
             //gamepad2.right_stick_x is moving the foundation motors forward when you move the right stick right
             if (gamepad2.right_stick_x == 1.0f){
                 foundationDC.setPower(0.5);
                 telemetry.addData("G2 RS-x forward", gamepad1.right_stick_x);
                 telemetry.update();
             }
+            else {
+                foundationDC.setPower(0);
+            }
             //gamepad2.right_stick_x is moving the foundation motors backward when you move the right stick left
             if (gamepad2.right_stick_x == -1.0f) {
                 foundationDC.setPower(-0.5);
-                telemetry.addData("G2 RS-x backward", gamepad1.right_stick_x);
+                telemetry.addData("G2 R  S-x backward", gamepad1.right_stick_x);
                 telemetry.update();
             }
+            else {
+                foundationDC.setPower(0);
+            }
+
+            if (gamepad2.a){
+                clawDrop.setPosition(-180);
+                sleep(500);
+                clawGripper.setPosition(250);
+                telemetry.addData("Grabbing", gamepad2.a);
+                telemetry.update();
+            }
+
         }
 
         }
