@@ -4,9 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name = "TeleOpsOmega", group = "")
+@TeleOp(name = "TeleOpsOmega", group = "TeleOp")
 public class TeleOpsOmega extends LinearOpMode
 {
 
@@ -21,6 +22,9 @@ public class TeleOpsOmega extends LinearOpMode
     private Servo clawGripper;
     private Servo foundationLeft;
     private Servo foundationRight;
+
+    TouchSensor ts_bottom;
+    TouchSensor ts_top;
 
     double foundationLeftPosition;
     double foundationRightPosition;
@@ -45,6 +49,12 @@ public class TeleOpsOmega extends LinearOpMode
         clawGripper = hardwareMap.servo.get("clawGripper");
         foundationLeft = hardwareMap.servo.get("foundationLeft");
         foundationRight = hardwareMap.servo.get("foundationRight");
+
+        ts_bottom = hardwareMap.touchSensor.get("ts_bottom");
+        ts_top = hardwareMap.touchSensor.get("ts_top");
+
+
+
         float speed = 0.0f;
         double turnspeed = 0.0f;
 
@@ -87,23 +97,35 @@ public class TeleOpsOmega extends LinearOpMode
                     rightBack.setPower(0.75);
                 }
 
+                if (gamepad1.dpad_up) {
+                    leftFront.setPower(0.2);
+                    leftBack.setPower(0.2);
+                    rightFront.setPower(-0.2);
+                    rightBack.setPower(-0.2);
+                }
+
+
+                if (gamepad1.dpad_down) {
+                    leftFront.setPower(-0.2);
+                    leftBack.setPower(-0.2);
+                    rightFront.setPower(0.2);
+                    rightBack.setPower(0.2);
+                }
+
+
                 //gamepad2.dpad_up is moving the claw up when you press up on the dpad
-                if (gamepad2.dpad_up) {
+                if (gamepad2.dpad_up && !ts_bottom.isPressed()) {
                     clawDC.setPower(1);
                     telemetry.addData("G2 D-Up", gamepad1.dpad_up);
                     telemetry.update();
-                } else if (!gamepad2.dpad_up) {
-                    clawDC.setPower(0);
-                }
-
-                //gamepad2.dpad_down is moving the claw down when you press down on the dpad
-                if (gamepad2.dpad_down) {
+                } else if (gamepad2.dpad_down && !ts_top.isPressed()) {
                     clawDC.setPower(-0.5);
                     telemetry.addData("G2 D-Down", gamepad1.dpad_down);
                     telemetry.update();
-                } else if (!gamepad2.dpad_down) {
+                } else  {
                     clawDC.setPower(0);
                 }
+
                 //gamepad2.right_stick_x is moving the foundation motors forward when you move the right stick right
                 if (gamepad2.right_stick_x == 1.0f) {
                     foundationDC.setPower(0.5);
@@ -148,6 +170,18 @@ public class TeleOpsOmega extends LinearOpMode
 
                 } else if (!gamepad2.right_bumper) {
                     foundationDC.setPower(0);
+                }
+
+                if (ts_top.isPressed()) {
+                    telemetry.addData("ts_top", "Is Pressed");
+                    telemetry.update();
+                    clawDC.setPower(0);
+                }
+
+                if (ts_bottom.isPressed()) {
+                    telemetry.addData("ts_bottom", "Is Pressed");
+                    telemetry.update();
+                    clawDC.setPower(0);
                 }
 
                 if (gamepad2.x && foundationLeftPosition > MIN_POSITION) {
