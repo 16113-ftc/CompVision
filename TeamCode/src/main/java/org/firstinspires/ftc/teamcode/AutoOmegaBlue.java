@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @Autonomous(name = "Omega:Auto Drive (blue)", group = "Autonomous")
 public class AutoOmegaBlue extends LinearOpMode {
-//1.5 seconds of spinning at 0.75 = 2 ft.
+    //1.5 seconds of spinning at 0.75 = 2 ft.
     OmegaSquadRobot robot = new OmegaSquadRobot();
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -38,49 +38,13 @@ public class AutoOmegaBlue extends LinearOpMode {
         telemetry.addData("Autonomous Mode Status", "Ready to Run");
         telemetry.update();
 
-
         Boolean Tf = true;
-
         waitForStart();
 
-        //Go towards the block
-        robot.leftFront.setPower(FORWARD_SPEED);
-        robot.leftBack.setPower(FORWARD_SPEED);
-        robot.rightFront.setPower(FORWARD_SPEED);
-        robot.rightBack.setPower(FORWARD_SPEED);
-        runtime.reset();
+        SteerForSeconds(1.4);
+        StopSteering();
 
-        while (opModeIsActive() && (runtime.seconds() < 1.4)) {
-            telemetry.addData("Path", "Towards Block: %2.5f S  Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-
-        robot.leftFront.setPower(0);
-        robot.leftBack.setPower(0);
-        robot.rightFront.setPower(0);
-        robot.rightBack.setPower(0);
-
-
-        //claw Drop
-        runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 1.1)
-        {
-            robot.clawDrop.setPosition(-180);
-            telemetry.addData("Claw Drop", "-180");
-            telemetry.update();
-        }
-
-        //Move ClawGripper servo
-        runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 1.5)
-        {
-            robot.clawGripper.setPosition(250);
-            telemetry.addData("Claw Grip", "250");
-            telemetry.update();
-        }
-
-
-
+        GrabStone();
 
         //After grabbing the block, come backward
         robot.leftFront.setPower(REVERSE_SPEED);
@@ -89,16 +53,11 @@ public class AutoOmegaBlue extends LinearOpMode {
         robot.rightBack.setPower(REVERSE_SPEED);
         runtime.reset();
 
-        while (opModeIsActive() && (runtime.seconds() < 1.5)) {
+        while (opModeIsActive() && (runtime.seconds() < 0.8)) {
             telemetry.addData("Path", "Grabbed Block going back: %2.5f S  Elapsed", runtime.seconds());
             telemetry.update();
         }
-        robot.leftFront.setPower(0);
-        robot.leftBack.setPower(0);
-        robot.rightFront.setPower(0);
-        robot.rightBack.setPower(0);
-
-
+       StopSteering();
 
         //Turn 90 Degrees to go under the alliance bridge
         robot.leftFront.setPower(0.5);
@@ -107,81 +66,136 @@ public class AutoOmegaBlue extends LinearOpMode {
         robot.rightBack.setPower(-0.5);
         runtime.reset();
 
-        while (opModeIsActive() && (runtime.seconds() < 1.55)) {
+        while (opModeIsActive() && (runtime.seconds() < 1.7)) {
             telemetry.addData("Path", "Turning 90 Deg to go under bridge: %2.5f S  Elapsed", runtime.seconds());
             telemetry.update();
         }
 
 
-        robot.leftFront.setPower(0);
-        robot.leftBack.setPower(0);
-        robot.rightFront.setPower(0);
-        robot.rightBack.setPower(0);
+        StopSteering();
 
+        SteerForSeconds(5.5);
 
-        //Pass through the alliance bridge
-        robot.leftFront.setPower(FORWARD_SPEED);
-        robot.leftBack.setPower(FORWARD_SPEED);
-        robot.rightFront.setPower(FORWARD_SPEED);
-        robot.rightBack.setPower(FORWARD_SPEED);
+        StopSteering();
+        //Turn towards foundation
+
+        robot.leftFront.setPower(-0.5);
+        robot.leftBack.setPower(-0.5);
+        robot.rightFront.setPower(0.5);
+        robot.rightBack.setPower(0.5);
         runtime.reset();
 
-        while (opModeIsActive() && (runtime.seconds() < 3.8)) {
-            telemetry.addData("Path", "Passing under alliance bridge: %2.5f S  Elapsed", runtime.seconds());
+        while (opModeIsActive() && (runtime.seconds() < 1.55)) {
+            telemetry.addData("Path", "Turning 90 Deg to face foundation: %2.5f S  Elapsed", runtime.seconds());
             telemetry.update();
         }
 
-        robot.leftFront.setPower(0);
-        robot.leftBack.setPower(0);
-        robot.rightFront.setPower(0);
-        robot.rightBack.setPower(0);
+        StopSteering();
 
 
-        //Turn towards foundation
+
+
+        while(opModeIsActive() &&!robot.ts_bottom.isPressed()) {
+            robot.clawDC.setPower(1);
+            //power of 1 is needed to go up
+            robot.clawGripper.setPosition(250);
+            telemetry.addData("Pick up stone", "up");
+            telemetry.update();
+        }
+
+        robot.clawDC.setPower(0);
+
+
+        robot.leftFront.setPower(0.2);
+        robot.leftBack.setPower(0.2);
+        robot.rightFront.setPower(0.2);
+        robot.rightBack.setPower(0.2);
+
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 2)) {
+            robot.clawGripper.setPosition(250);
+            telemetry.addData("Path", "Forward to foundation: %2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+
+        StopSteering();
+
+        runtime.reset();
+        while (opModeIsActive() && runtime.seconds() < 1) {
+            //stone released
+            robot.clawGripper.setPosition(-45);
+            sleep(1000);
+            robot.clawDrop.setPosition(180);
+            telemetry.addData("Release  stone: 2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+        while(foundationLeftPosition > MIN_POSITION && opModeIsActive() && foundationRightPosition < MAX_POSITION) {
+            foundationLeftPosition -= .01;
+            robot.foundationLeft.setPosition(Range.clip(foundationLeftPosition, MIN_POSITION, MAX_POSITION));
+            telemetry.addData("Foundation Left",
+                    "  Actual(left)=" + robot.foundationLeft.getPosition()
+                            + "  Position(left)=" + foundationLeftPosition);
+            telemetry.update();
+
+            foundationRightPosition += .01;
+            robot.foundationRight.setPosition(Range.clip(foundationRightPosition, MIN_POSITION, MAX_POSITION));
+            telemetry.addData("Foundation Right",
+                    "  Actual(right)=" + robot.foundationRight.getPosition()
+                            + "  Position(right)=" + foundationRightPosition);
+            telemetry.update();
+        }
+
+        sleep(1000);
 
         robot.leftFront.setPower(-0.5);
         robot.leftBack.setPower(-0.5);
         robot.rightFront.setPower(-0.5);
         robot.rightBack.setPower(-0.5);
-        runtime.reset();
 
-        while (opModeIsActive() && (runtime.seconds() < 1)) {
-            telemetry.addData("Path", "Turning 90 Deg to go under bridge: %2.5f S  Elapsed", runtime.seconds());
+
+
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 2)) {
+            telemetry.addData("Path", "moving foundation: %2.5f S Elapsed", runtime.seconds());
+            robot.foundationLeft.setPosition(0);
+            robot.foundationRight.setPosition(1);
             telemetry.update();
         }
 
+        while(foundationLeftPosition < MAX_POSITION && opModeIsActive() && foundationRightPosition < MAX_POSITION) {
+            foundationLeftPosition += .01;
+            robot.foundationLeft.setPosition(Range.clip(foundationLeftPosition, MIN_POSITION, MAX_POSITION));
+            telemetry.addData("Foundation Left",
+                    "  Actual(left)=" + robot.foundationLeft.getPosition()
+                            + "  Position(left)=" + foundationLeftPosition);
+            telemetry.update();
 
-        robot.leftFront.setPower(0);
-        robot.leftBack.setPower(0);
-        robot.rightFront.setPower(0);
-        robot.rightBack.setPower(0);
+            foundationRightPosition -= .01;
+            robot.foundationRight.setPosition(Range.clip(foundationRightPosition, MIN_POSITION, MAX_POSITION));
+            telemetry.addData("Foundation Right",
+                    "  Actual(right)=" + robot.foundationRight.getPosition()
+                            + "  Position(right)=" + foundationRightPosition);
+            telemetry.update();
 
 
+        }
 
-        robot.clawGripper.setPosition(-45);
-        sleep(1000);
-        robot.clawDrop.setPosition(180);
-        telemetry.addData("Grabbing", true);
-        telemetry.update();
-
-
-        robot.leftFront.setPower(0.5);
-        robot.leftBack.setPower(-0.5);
-        robot.rightFront.setPower(-0.5);
-        robot.rightBack.setPower(0.5);
-        runtime.reset();
-
-        while (opModeIsActive() && (runtime.seconds() < 0.5)) {
-            telemetry.addData("Path", "Turning 90 Deg to go under bridge: %2.5f S  Elapsed", runtime.seconds());
+        while(opModeIsActive() &&!robot.ts_top.isPressed()) {
+            robot.clawDC.setPower(-0.5);
+            //power of 1 is needed to go up
+            telemetry.addData("Drop Claw", "up");
             telemetry.update();
         }
 
+        robot.clawDC.setPower(0);
 
-        robot.leftFront.setPower(0);
-        robot.leftBack.setPower(0);
-        robot.rightFront.setPower(0);
-        robot.rightBack.setPower(0);
 
+        ShuffleRight(5);
+
+
+        }
 
         /*
 
@@ -374,5 +388,80 @@ public class AutoOmegaBlue extends LinearOpMode {
             telemetry.update();
         }
 */
+
+
+    private void SteerForSeconds(double time) {
+        robot.leftFront.setPower(FORWARD_SPEED);
+        robot.leftBack.setPower(FORWARD_SPEED);
+        robot.rightFront.setPower(FORWARD_SPEED);
+        robot.rightBack.setPower(FORWARD_SPEED);
+        runtime.reset();
+
+        while (opModeIsActive() && (runtime.seconds() < time)) {
+            telemetry.addData("Path", "Towards Block: %2.5f S  Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+    }
+
+    private void Spin90DegreesClockwise() {
+
+    }
+
+    private void Spin90DegreesCounterClockwise() {
+
+    }
+
+    private void StopSteering() {
+        robot.leftFront.setPower(0);
+        robot.leftBack.setPower(0);
+        robot.rightFront.setPower(0);
+        robot.rightBack.setPower(0);
+    }
+
+    private void ShuffleLeft(double time) {
+        robot.leftFront.setPower(-FORWARD_SPEED);
+        robot.leftBack.setPower(FORWARD_SPEED);
+        robot.rightFront.setPower(FORWARD_SPEED);
+        robot.rightBack.setPower(-FORWARD_SPEED);
+        runtime.reset();
+
+        while (opModeIsActive() && (runtime.seconds() < time)) {
+            telemetry.addData("Path", "shuffle left %2.5f S  Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+
+    }
+
+    private void ShuffleRight(double time) {
+        robot.leftFront.setPower(FORWARD_SPEED);
+        robot.leftBack.setPower(-FORWARD_SPEED);
+        robot.rightFront.setPower(-FORWARD_SPEED);
+        robot.rightBack.setPower(FORWARD_SPEED);
+        runtime.reset();
+
+        while (opModeIsActive() && (runtime.seconds() < time)) {
+            telemetry.addData("Path", "shuffle right %2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+
+    }
+    private void GrabStone() {
+        runtime.reset();
+        while (opModeIsActive() && runtime.seconds() < 1.5)
+        {
+            robot.clawDrop.setPosition(-180);
+            telemetry.addData("Claw Drop", "-180");
+            telemetry.update();
+        }
+        runtime.reset();
+        while (opModeIsActive() && runtime.seconds() < 1.3)
+        {
+            robot.clawGripper.setPosition(250);
+            telemetry.addData("Claw Grip", "250");
+            telemetry.update();
+        }
     }
 }

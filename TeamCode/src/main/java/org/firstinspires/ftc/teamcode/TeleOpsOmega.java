@@ -8,23 +8,10 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name = "TeleOpsOmega", group = "TeleOp")
-public class TeleOpsOmega extends LinearOpMode
-{
+public class TeleOpsOmega extends LinearOpMode {
+    OmegaSquadRobot robot = new OmegaSquadRobot();
 
-    private DcMotor leftFront;
-    private DcMotor rightFront;
-    private DcMotor leftBack;
-    private DcMotor rightBack;
-    private DcMotor clawDC;
-    private DcMotor foundationDC;
-
-    private Servo clawDrop;
-    private Servo clawGripper;
-    private Servo foundationLeft;
-    private Servo foundationRight;
-
-    TouchSensor ts_bottom;
-    TouchSensor ts_top;
+    private static final boolean PHONE_IS_PORTRAIT = true  ;
 
     double foundationLeftPosition;
     double foundationRightPosition;
@@ -32,214 +19,172 @@ public class TeleOpsOmega extends LinearOpMode
     double FOUNDATION_INITIAL_POSITION = 0;
 
     double MIN_POSITION = 0, MAX_POSITION = 1;
+
     /**
      * This function is executed when this Op Mode is selected from the Driver Station.
      */
     @Override
-    public void runOpMode()
-    {
-        leftFront = hardwareMap.dcMotor.get("leftFront");
-        rightFront = hardwareMap.dcMotor.get("rightFront");
-        leftBack = hardwareMap.dcMotor.get("leftBack");
-        rightBack = hardwareMap.dcMotor.get("rightBack");
-
-        clawDC = hardwareMap.dcMotor.get("clawDC");
-        foundationDC = hardwareMap.dcMotor.get("foundationDC");
-        clawDrop = hardwareMap.servo.get("clawDrop");
-        clawGripper = hardwareMap.servo.get("clawGripper");
-        foundationLeft = hardwareMap.servo.get("foundationLeft");
-        foundationRight = hardwareMap.servo.get("foundationRight");
-
-        ts_bottom = hardwareMap.touchSensor.get("ts_bottom");
-        ts_top = hardwareMap.touchSensor.get("ts_top");
-
-
-
+    public void runOpMode() {
         float speed = 0.0f;
         double turnspeed = 0.0f;
 
-        telemetry.addData("Mode", "waiting");
-
-        waitForStart();
         foundationLeftPosition = FOUNDATION_INITIAL_POSITION;
         foundationRightPosition = FOUNDATION_INITIAL_POSITION;
 
-        if (opModeIsActive()) {
-            // Put run blocks here.
-            while (opModeIsActive()) {
-                speed = gamepad1.left_stick_y;
-                leftFront.setPower(-speed);
-                leftBack.setPower(-speed);
-                rightFront.setPower(speed);
-                rightBack.setPower(speed);
+        robot.init(hardwareMap);
 
-                turnspeed = gamepad1.left_stick_x;
-                leftFront.setPower(-turnspeed);
-                leftBack.setPower(-turnspeed);
-                rightFront.setPower(-turnspeed);
-                rightBack.setPower(-turnspeed);
+        telemetry.addData("Driver", "Waiting for you to Start");
+        telemetry.update();
 
-//gamepad1.dpad_right is shuffling right when you press the right button on the dpad
+        waitForStart();
 
-                if (gamepad1.dpad_right) {
-                    leftFront.setPower(0.75);
-                    leftBack.setPower(-0.75);
-                    rightFront.setPower(0.75);
-                    rightBack.setPower(-0.75);
-                }
+        // Put run blocks here.
+        while (opModeIsActive()) {
+            speed = gamepad1.left_stick_y;
+            robot.leftFront.setPower(-speed);
+            robot.leftBack.setPower(-speed);
+            robot.rightFront.setPower(-speed);
+            robot.rightBack.setPower(-speed);
 
-                //gamepad1.dpad_left is shuffling left when you press the left button on the dpad
+            turnspeed = gamepad1.left_stick_x;
+            robot.leftFront.setPower(-turnspeed);
+            robot.leftBack.setPower(-turnspeed);
+            robot.rightFront.setPower(turnspeed);
+            robot.rightBack.setPower(turnspeed);
 
-                if (gamepad1.dpad_left) {
-                    leftFront.setPower(-0.75);
-                    leftBack.setPower(0.75);
-                    rightFront.setPower(-0.75);
-                    rightBack.setPower(0.75);
-                }
-
-                if (gamepad1.dpad_up) {
-                    leftFront.setPower(0.2);
-                    leftBack.setPower(0.2);
-                    rightFront.setPower(-0.2);
-                    rightBack.setPower(-0.2);
-                }
-
-
-                if (gamepad1.dpad_down) {
-                    leftFront.setPower(-0.2);
-                    leftBack.setPower(-0.2);
-                    rightFront.setPower(0.2);
-                    rightBack.setPower(0.2);
-                }
-
-
-                //gamepad2.dpad_up is moving the claw up when you press up on the dpad
-                if (gamepad2.dpad_up && !ts_bottom.isPressed()) {
-                    clawDC.setPower(1);
-                    telemetry.addData("G2 D-Up", gamepad1.dpad_up);
-                    telemetry.update();
-                } else if (gamepad2.dpad_down && !ts_top.isPressed()) {
-                    clawDC.setPower(-0.5);
-                    telemetry.addData("G2 D-Down", gamepad1.dpad_down);
-                    telemetry.update();
-                } else  {
-                    clawDC.setPower(0);
-                }
-
-                //gamepad2.right_stick_x is moving the foundation motors forward when you move the right stick right
-                if (gamepad2.right_stick_x == 1.0f) {
-                    foundationDC.setPower(0.5);
-                    telemetry.addData("G2 RS-x forward", gamepad1.right_stick_x);
-                    telemetry.update();
-                } else if (gamepad2.right_stick_x != 1.0f) {
-                    foundationDC.setPower(0);
-                }
-                //gamepad2.right_stick_x is moving the foundation motors backward when you move the right stick left
-                if (gamepad2.right_stick_x == -1.0f) {
-                    foundationDC.setPower(-0.5);
-                    telemetry.addData("G2 R  S-x backward", gamepad1.right_stick_x);
-                    telemetry.update();
-                } else if (gamepad2.right_stick_x != -1.0f) {
-                    foundationDC.setPower(0);
-                }
-
-                if (gamepad2.a) {
-                    clawDrop.setPosition(-180);
-                    sleep(1000);
-                    clawGripper.setPosition(250);
-                    telemetry.addData("Grabbing", gamepad2.a);
-                    telemetry.update();
-                }
-                if (gamepad2.b) {
-                    clawGripper.setPosition(-45);
-                    sleep(1000);
-                    clawDrop.setPosition(180);
-                    telemetry.addData("Grabbing", gamepad2.b);
-                    telemetry.update();
-                }
-
-                if (gamepad2.left_bumper) {
-                    foundationDC.setPower(-0.75);
-
-                } else if (!gamepad2.left_bumper) {
-                    foundationDC.setPower(0);
-                }
-
-                if (gamepad2.right_bumper) {
-                    foundationDC.setPower(0.75);
-
-                } else if (!gamepad2.right_bumper) {
-                    foundationDC.setPower(0);
-                }
-
-                if (ts_top.isPressed()) {
-                    telemetry.addData("ts_top", "Is Pressed");
-                    telemetry.update();
-                    clawDC.setPower(0);
-                }
-
-                if (ts_bottom.isPressed()) {
-                    telemetry.addData("ts_bottom", "Is Pressed");
-                    telemetry.update();
-                    clawDC.setPower(0);
-                }
-
-                if (gamepad2.x && foundationLeftPosition > MIN_POSITION) {
-                    foundationLeftPosition -= .02;
-                    //foundationRight.setPosition (-5);
-                    foundationLeft.setPosition(Range.clip(foundationLeftPosition, MIN_POSITION, MAX_POSITION));
-                    telemetry.addData("Foundation Left",
-                            "  Actual=" + foundationLeft.getPosition()
-                                    + "  Position=" + foundationLeftPosition);
-                    //telemetry.addData("Left", foundationLeft.getPosition());
-                    telemetry.update();
-                }
-                if (gamepad2.y && foundationLeftPosition < MAX_POSITION) {
-                    foundationLeftPosition += .02;
-                    foundationLeft.setPosition(Range.clip(foundationLeftPosition, MIN_POSITION, MAX_POSITION));
-                    telemetry.addData("Foundation Left",
-                            "  Actual=" + foundationLeft.getPosition()
-                                    + "  Position=" + foundationLeftPosition);
-                    //telemetry.addData("Left", foundationLeft.getPosition());
-                    telemetry.update();
-                    //foundationRight.setPosition (180);
-                    //foundationLeft.setPosition (-130);
-                    //telemetry.addData("Right", foundationRight.getPosition());
-                    //telemetry.addData("Left", foundationLeft.getPosition());
-                    //telemetry.update();
-                }
-
-
-                if (gamepad2.y && foundationRightPosition > MIN_POSITION) {
-                    foundationRightPosition -= .02;
-                    //foundationRight.setPosition (-5);
-                    foundationRight.setPosition(Range.clip(foundationRightPosition, MIN_POSITION, MAX_POSITION));
-                    telemetry.addData("Foundation Right",
-                            "  Actual=" + foundationRight.getPosition()
-                                    + "  Position=" + foundationRightPosition);
-                    //telemetry.addData("Left", foundationLeft.getPosition());
-                    telemetry.update();
-                }
-                if (gamepad2.x && foundationRightPosition < MAX_POSITION) {
-                    foundationRightPosition += .02;
-                    foundationRight.setPosition(Range.clip(foundationRightPosition, MIN_POSITION, MAX_POSITION));
-                    telemetry.addData("Foundation Right",
-                            "  Actual=" + foundationRight.getPosition()
-                                    + "  Position=" + foundationRightPosition);
-                    //telemetry.addData("Left", foundationLeft.getPosition());
-                    telemetry.update();
-                    //foundationRight.setPosition (180);
-                    //foundationLeft.setPosition (-130);
-                    //telemetry.addData("Right", foundationRight.getPosition());
-                    //telemetry.addData("Left", foundationLeft.getPosition());
-                    //telemetry.update();
-                }
-
-                idle();
-
-
+            //gamepad1.dpad_right is shuffling right when you press
+            // the right button on the dpad
+            if (gamepad1.dpad_right) {
+                robot.leftFront.setPower(0.75);
+                robot.leftBack.setPower(-0.75);
+                robot.rightFront.setPower(-0.75);
+                robot.rightBack.setPower(0.75);
             }
 
+            //gamepad1.dpad_left is shuffling left when you press
+            // the left button on the dpad
+            if (gamepad1.dpad_left) {
+                robot.leftFront.setPower(-0.75);
+                robot.leftBack.setPower(0.75);
+                robot.rightFront.setPower(0.75);
+                robot.rightBack.setPower(-0.75);
+            }
+
+            if (gamepad1.dpad_up) {
+                robot.leftFront.setPower(0.2);
+                robot.leftBack.setPower(0.2);
+                robot.rightFront.setPower(-0.2);
+                robot.rightBack.setPower(-0.2);
+            }
+
+            if (gamepad1.dpad_down) {
+                robot.leftFront.setPower(-0.2);
+                robot.leftBack.setPower(-0.2);
+                robot.rightFront.setPower(0.2);
+                robot.rightBack.setPower(0.2);
+            }
+
+            //gamepad2.dpad_up is moving the claw up when you press
+            // up on the dpad
+            if (gamepad2.dpad_up && !robot.ts_bottom.isPressed()) {
+                robot.clawDC.setPower(1);
+                telemetry.addData("G2 D-Up", gamepad1.dpad_up);
+                telemetry.update();
+            } else if (gamepad2.dpad_down && !robot.ts_top.isPressed()) {
+                robot.clawDC.setPower(-0.5);
+                telemetry.addData("G2 D-Down", gamepad1.dpad_down);
+                telemetry.update();
+            } else {
+                robot.clawDC.setPower(0);
+            }
+
+
+
+            if (gamepad2.a) {
+                robot.clawDrop.setPosition(-180);
+                sleep(1000);
+                robot.clawGripper.setPosition(250);
+                telemetry.addData("Grabbing", gamepad2.a);
+                telemetry.update();
+            }
+            if (gamepad2.b) {
+                robot.clawGripper.setPosition(-45);
+                sleep(1000);
+                robot.clawDrop.setPosition(180);
+                telemetry.addData("Grabbing", gamepad2.b);
+                telemetry.update();
+            }
+
+
+
+            if (robot.ts_top.isPressed()) {
+                telemetry.addData("ts_top", "Is Pressed");
+                telemetry.update();
+                robot.clawDC.setPower(0);
+            }
+
+            if (robot.ts_bottom.isPressed()) {
+                telemetry.addData("ts_bottom", "Is Pressed");
+                telemetry.update();
+                robot.clawDC.setPower(0);
+            }
+
+            if (gamepad2.x && foundationLeftPosition > MIN_POSITION) {
+                foundationLeftPosition -= .02;
+                //foundationRight.setPosition (-5);
+                robot.foundationLeft.setPosition(Range.clip(foundationLeftPosition, MIN_POSITION, MAX_POSITION));
+                telemetry.addData("Foundation Left",
+                        "  Actual=" + robot.foundationLeft.getPosition()
+                                + "  Position=" + foundationLeftPosition);
+                //telemetry.addData("Left", foundationLeft.getPosition());
+                telemetry.update();
+            }
+            if (gamepad2.y && foundationLeftPosition < MAX_POSITION) {
+                foundationLeftPosition += .02;
+                robot.foundationLeft.setPosition(Range.clip(foundationLeftPosition, MIN_POSITION, MAX_POSITION));
+                telemetry.addData("Foundation Left",
+                        "  Actual=" + robot.foundationLeft.getPosition()
+                                + "  Position=" + foundationLeftPosition);
+                //telemetry.addData("Left", foundationLeft.getPosition());
+                telemetry.update();
+                //foundationRight.setPosition (180);
+                //foundationLeft.setPosition (-130);
+                //telemetry.addData("Right", foundationRight.getPosition());
+                //telemetry.addData("Left", foundationLeft.getPosition());
+                //telemetry.update();
+            }
+
+
+            if (gamepad2.y && foundationRightPosition > MIN_POSITION) {
+                foundationRightPosition -= .02;
+                //foundationRight.setPosition (-5);
+                robot.foundationRight.setPosition(Range.clip(foundationRightPosition, MIN_POSITION, MAX_POSITION));
+                telemetry.addData("Foundation Right",
+                        "  Actual=" + robot.foundationRight.getPosition()
+                                + "  Position=" + foundationRightPosition);
+                //telemetry.addData("Left", foundationLeft.getPosition());
+                telemetry.update();
+            }
+            if (gamepad2.x && foundationRightPosition < MAX_POSITION) {
+                foundationRightPosition += .02;
+                robot.foundationRight.setPosition(Range.clip(foundationRightPosition, MIN_POSITION, MAX_POSITION));
+                telemetry.addData("Foundation Right",
+                        "  Actual=" + robot.foundationRight.getPosition()
+                                + "  Position=" + foundationRightPosition);
+                //telemetry.addData("Left", foundationLeft.getPosition());
+                telemetry.update();
+                //foundationRight.setPosition (180);
+                //foundationLeft.setPosition (-130);
+                //telemetry.addData("Right", foundationRight.getPosition());
+                //telemetry.addData("Left", foundationLeft.getPosition());
+                //telemetry.update();
+            }
+
+            idle();
+
+
         }
+
+
     }
 }

@@ -1,13 +1,11 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.robotcontroller.external.samples;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class OmegaSquadRobot {
 
@@ -83,20 +81,14 @@ public class OmegaSquadRobot {
         //Initialize all Servo Motors
         clawDrop = hardwareMap.servo.get("clawDrop");
         clawGripper = hardwareMap.servo.get("clawGripper");
-        //open = left, closed = right
         foundationLeft = hardwareMap.servo.get("foundationLeft");
-        //down = left, up = right
         foundationRight = hardwareMap.servo.get("foundationRight");
-        //down = right, up = left
         capperServo = hardwareMap.servo.get("capperServo");
 
         //Set All servo motors initial position
         clawDrop.setPosition(1);
-        foundationLeft.setPosition(1);
-        foundationRight.setPosition(0);
-
-        clawGripper.setDirection(Servo.Direction.FORWARD);
         clawGripper.setPosition(0);
-
+        foundationLeft.setPosition(0);
+        foundationRight.setPosition(0);
     }
 }
