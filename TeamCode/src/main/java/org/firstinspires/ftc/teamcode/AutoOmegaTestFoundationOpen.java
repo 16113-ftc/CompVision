@@ -8,9 +8,9 @@ import com.qualcomm.robotcore.util.Range;
 @Autonomous(name = "Omega:Auto Foundation Test(open)", group = "Autonomous")
 public class AutoOmegaTestFoundationOpen extends LinearOpMode {
     OmegaSquadRobot robot = new OmegaSquadRobot();
-    double MIN_POSITION = 0, MAX_POSITION = 2;
+    double MIN_POSITION = 0, MAX_POSITION = 1;
     double foundationLeftPosition = 0.0;
-    double foundationRightPosition = 0.0;
+    double foundationRightPosition = 1.0;
 
 
     //@Override
@@ -23,7 +23,7 @@ public class AutoOmegaTestFoundationOpen extends LinearOpMode {
 
         waitForStart();
 
-        while(foundationLeftPosition < MAX_POSITION && opModeIsActive() && foundationRightPosition < MAX_POSITION) {
+        while(foundationLeftPosition < MAX_POSITION && opModeIsActive() && foundationRightPosition > MIN_POSITION) {
             foundationLeftPosition += .01;
             robot.foundationLeft.setPosition(Range.clip(foundationLeftPosition, MIN_POSITION, MAX_POSITION));
             telemetry.addData("Foundation Left",
