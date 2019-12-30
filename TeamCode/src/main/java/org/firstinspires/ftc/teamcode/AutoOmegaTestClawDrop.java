@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 @Autonomous(name = "Omega:Auto Claw Drop", group = "Autonomous")
+
+@Disabled
 public class AutoOmegaTestClawDrop extends LinearOpMode {
     OmegaSquadRobot robot = new OmegaSquadRobot();
     private ElapsedTime runtime = new ElapsedTime();

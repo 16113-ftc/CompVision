@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp(name = "w_TensorFlow_sample_v02", group = "")
+
+@Disabled
 public class W_TensorFlow_sample_v02 extends LinearOpMode {
 
     private VuforiaSkyStone vuforiaSkyStone;

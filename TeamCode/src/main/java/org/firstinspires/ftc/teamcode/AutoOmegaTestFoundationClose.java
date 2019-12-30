@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.Range;
 
 
 @Autonomous(name = "Omega:Auto Foundation Test(close)", group = "Autonomous")
+
+@Disabled
 public class AutoOmegaTestFoundationClose extends LinearOpMode {
     OmegaSquadRobot robot = new OmegaSquadRobot();
     double MIN_POSITION = 0, MAX_POSITION = 1;
