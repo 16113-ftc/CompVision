@@ -69,8 +69,8 @@ public class TeleOpsOmega extends LinearOpMode {
             if (gamepad1.dpad_up) {
                 robot.leftFront.setPower(0.2);
                 robot.leftBack.setPower(0.2);
-                robot.rightFront.setPower(-0.2);
-                robot.rightBack.setPower(-0.2);
+                robot.rightFront.setPower(0.2);
+                robot.rightBack.setPower(0.2);
             }
 
             if (gamepad1.dpad_down) {
