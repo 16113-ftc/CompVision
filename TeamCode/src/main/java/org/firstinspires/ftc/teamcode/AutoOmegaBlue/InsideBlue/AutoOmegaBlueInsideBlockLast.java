@@ -1,10 +1,15 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.AutoOmegaBlue.InsideBlue;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.OmegaSquadRobot;
+
 @Autonomous(name = "Auto Drive Blue (inside park, block last)", group = "Autonomous")
+//@Disabled
+
 public class AutoOmegaBlueInsideBlockLast extends LinearOpMode {
     //1.5 seconds of spinning at 0.75 = 2 ft.
     OmegaSquadRobot robot = new OmegaSquadRobot();

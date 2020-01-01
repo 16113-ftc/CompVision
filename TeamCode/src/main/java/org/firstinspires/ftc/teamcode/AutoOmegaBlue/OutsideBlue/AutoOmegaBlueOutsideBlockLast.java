@@ -1,16 +1,14 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.AutoOmegaBlue.OutsideBlue;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name = "Auto Drive Red (outside park)", group = "Autonomous")
-@Disabled
-public class AutoOmegaRedOutside extends LinearOpMode {
+import org.firstinspires.ftc.teamcode.OmegaSquadRobot;
+
+@Autonomous(name = "Auto Drive Blue (outside park, block last)", group = "Autonomous")
+//@Disabled
+public class AutoOmegaBlueOutsideBlockLast extends LinearOpMode {
     //1.5 seconds of spinning at 0.75 = 2 ft.
     OmegaSquadRobot robot = new OmegaSquadRobot();
     private ElapsedTime runtime = new ElapsedTime();
@@ -43,7 +41,23 @@ public class AutoOmegaRedOutside extends LinearOpMode {
         Boolean Tf = true;
         waitForStart();
 
-        SteerForSeconds(1.4);
+        SteerForSeconds(1.3);
+        Spin90Right();
+        SteerForSeconds(0.5);
+
+        robot.leftFront.setPower(0.5);
+        robot.leftBack.setPower(0.5);
+        robot.rightFront.setPower(-0.5);
+        robot.rightBack.setPower(-0.5);
+        runtime.reset();
+
+        while (opModeIsActive() && (runtime.seconds() < 1.55)) {
+            telemetry.addData("Path", "Turning 90 Deg to face Bridge: %2.5f S  Elapsed", runtime.seconds());
+
+            telemetry.update();
+
+        }
+        SteerForSeconds(0.2);
         StopSteering();
 
         GrabStone();
@@ -55,18 +69,18 @@ public class AutoOmegaRedOutside extends LinearOpMode {
         robot.rightBack.setPower(REVERSE_SPEED);
         runtime.reset();
 
-        while (opModeIsActive() && (runtime.seconds() < 0.1)) {
+        while (opModeIsActive() && (runtime.seconds() < 0.2)) {
             telemetry.addData("Path", "Grabbed Block going back: %2.5f S  Elapsed", runtime.seconds());
             telemetry.update();
         }
         StopSteering();
 
         //Turn 90 Degrees to go under the alliance bridge
-        Spin90Right();
+        Spin90Left();
 
         StopSteering();
 
-        SteerForSeconds(5.5);
+        SteerForSeconds(6);
 
         StopSteering();
         //Turn towards foundation
@@ -81,7 +95,7 @@ public class AutoOmegaRedOutside extends LinearOpMode {
 
         robot.clawDC.setPower(0);
 
-        Spin90Left();
+        Spin90Right();
 
         StopSteering();
 
@@ -121,7 +135,7 @@ public class AutoOmegaRedOutside extends LinearOpMode {
             telemetry.update();
         }
 
-        Spin90Left();
+        Spin90Right();
 
         StopSteering();
 
@@ -134,10 +148,13 @@ public class AutoOmegaRedOutside extends LinearOpMode {
 
         robot.clawDC.setPower(0);
 
-        SteerForSeconds(3);
+        SteerForSeconds(4);
 
         StopSteering();
     }
+
+
+
 
     private void SteerForSeconds(double time) {
         robot.leftFront.setPower(FORWARD_SPEED);
@@ -160,7 +177,7 @@ public class AutoOmegaRedOutside extends LinearOpMode {
         robot.rightBack.setPower(0.5);
         runtime.reset();
 
-        while (opModeIsActive() && (runtime.seconds() < 1.55)) {
+        while (opModeIsActive() && (runtime.seconds() < 1.65)) {
             telemetry.addData("Path", "Turning 90 Deg to face Bridge: %2.5f S  Elapsed", runtime.seconds());
 
             telemetry.update();
@@ -175,7 +192,7 @@ public class AutoOmegaRedOutside extends LinearOpMode {
         robot.rightBack.setPower(-0.5);
         runtime.reset();
 
-        while (opModeIsActive() && (runtime.seconds() < 1.65)) {
+        while (opModeIsActive() && (runtime.seconds() < 1.6)) {
             telemetry.addData("Path", "Turning 90 Deg to go under bridge: %2.5f S  Elapsed", runtime.seconds());
             telemetry.update();
         }
