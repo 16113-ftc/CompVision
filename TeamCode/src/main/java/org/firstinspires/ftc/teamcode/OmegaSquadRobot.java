@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -30,7 +31,12 @@ public class OmegaSquadRobot {
     public ColorSensor stoneColorSensor;
     public DistanceSensor stoneDistanceSensor;
 
+    public BNO055IMU imu;
+
+
     HardwareMap hardwareMap = null;
+
+
 
     public OmegaSquadRobot() {
 
@@ -57,6 +63,8 @@ public class OmegaSquadRobot {
         ts_top = hardwareMap.touchSensor.get("ts_top");
         stoneColorSensor = hardwareMap.colorSensor.get("stoneColorSensor");
         stoneDistanceSensor = hardwareMap.get(DistanceSensor.class, "stoneDistanceSensor");
+
+        imu = hardwareMap.get(BNO055IMU.class,"imu");
 
 
         leftFront.setDirection(DcMotor.Direction.FORWARD);
