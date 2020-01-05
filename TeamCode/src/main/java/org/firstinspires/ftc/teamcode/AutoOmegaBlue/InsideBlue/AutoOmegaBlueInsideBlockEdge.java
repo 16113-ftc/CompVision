@@ -94,7 +94,7 @@ public class AutoOmegaBlueInsideBlockEdge extends LinearOpMode {
 
         StopSteering();
 
-        SteerForSeconds(5.0);
+        SpeedForward(1.8);
 
         StopSteering();
         //Turn towards foundation
@@ -145,7 +145,7 @@ public class AutoOmegaBlueInsideBlockEdge extends LinearOpMode {
         robot.rightBack.setPower(-0.5);
         runtime.reset();
 
-        while (opModeIsActive() && (runtime.seconds() < 0.4)) {
+        while (opModeIsActive() && (runtime.seconds() < 0.7)) {
             telemetry.addData("Path", "Go back after placing stone: %2.5f S  Elapsed", runtime.seconds());
             telemetry.update();
         }
@@ -164,8 +164,7 @@ public class AutoOmegaBlueInsideBlockEdge extends LinearOpMode {
 
         robot.clawDC.setPower(0);
 
-        SteerForSeconds(3.5);
-
+        SpeedForward(1.2);
         StopSteering();
     }
 
@@ -390,9 +389,21 @@ public class AutoOmegaBlueInsideBlockEdge extends LinearOpMode {
         robot.leftFront.setPower(0);
 
         // wait for rotation to stop.
-        sleep(200);
+
 
         // reset angle tracking on new heading.
         resetAngle();
+    }
+    private void SpeedForward(double time) {
+        robot.leftFront.setPower(1);
+        robot.leftBack.setPower(1);
+        robot.rightFront.setPower(1);
+        robot.rightBack.setPower(1);
+        runtime.reset();
+
+        while (opModeIsActive() && (runtime.seconds() < time)) {
+            telemetry.addData("Path", "Towards Block: %2.5f S  Elapsed", runtime.seconds());
+            telemetry.update();
+        }
     }
 }
