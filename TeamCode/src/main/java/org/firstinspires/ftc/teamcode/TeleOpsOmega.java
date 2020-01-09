@@ -126,14 +126,14 @@ public class TeleOpsOmega extends LinearOpMode {
             }
 
             if (foundationLeftPosition > MIN_POSITION && gamepad2.x && foundationRightPosition < MAX_POSITION) {
-                foundationLeftPosition -= .01;
+                foundationLeftPosition -= .1;
                 robot.foundationLeft.setPosition(Range.clip(foundationLeftPosition, MIN_POSITION, MAX_POSITION));
                 telemetry.addData("Foundation Left",
                         "  Actual(left)=" + robot.foundationLeft.getPosition()
                                 + "  Position(left)=" + foundationLeftPosition);
                 telemetry.update();
 
-                foundationRightPosition += .01;
+                foundationRightPosition += .1;
                 robot.foundationRight.setPosition(Range.clip(foundationRightPosition, MIN_POSITION, MAX_POSITION));
                 telemetry.addData("Foundation Right",
                         "  Actual(right)=" + robot.foundationRight.getPosition()
@@ -147,14 +147,14 @@ public class TeleOpsOmega extends LinearOpMode {
 
 
             if(foundationLeftPosition < MAX_POSITION && gamepad2.y && foundationRightPosition > MIN_POSITION) {
-                foundationLeftPosition += .01;
+                foundationLeftPosition += .1;
                 robot.foundationLeft.setPosition(Range.clip(foundationLeftPosition, MIN_POSITION, MAX_POSITION));
                 telemetry.addData("Foundation Left",
                         "  Actual(left)=" + robot.foundationLeft.getPosition()
                                 + "  Position(left)=" + foundationLeftPosition);
                 telemetry.update();
 
-                foundationRightPosition -= .01;
+                foundationRightPosition -= .1;
                 robot.foundationRight.setPosition(Range.clip(foundationRightPosition, MIN_POSITION, MAX_POSITION));
                 telemetry.addData("Foundation Right",
                         "  Actual(right)=" + robot.foundationRight.getPosition()

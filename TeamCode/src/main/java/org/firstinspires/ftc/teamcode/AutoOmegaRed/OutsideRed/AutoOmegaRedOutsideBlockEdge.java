@@ -91,7 +91,7 @@ public class AutoOmegaRedOutsideBlockEdge extends LinearOpMode {
 
         StopSteering();
 
-        SpeedForward(2);
+        SpeedForward(2.25);
 
         StopSteering();
         //Turn towards foundation

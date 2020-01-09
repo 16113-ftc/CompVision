@@ -68,7 +68,7 @@ public class AutoOmegaBlueInsideBlockEdge extends LinearOpMode {
         rotate(80,0.5);
         SteerForSeconds(0.5);
 
-        rotate(-80,0.5);
+        rotate(-80,0.7);
         SteerForSeconds(1);
 
         StopSteering();
@@ -94,7 +94,7 @@ public class AutoOmegaBlueInsideBlockEdge extends LinearOpMode {
 
         StopSteering();
 
-        SpeedForward(1.8);
+        SpeedForward(2.75);
 
         StopSteering();
         //Turn towards foundation

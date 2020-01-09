@@ -67,7 +67,7 @@ public class AutoOmegaRedInsideBlockEdge extends LinearOpMode {
         SteerForSeconds(0.6);
 
         rotate(80,0.5);
-        SteerForSeconds(1.2);
+        SteerForSeconds(1.4);
 
         StopSteering();
 
@@ -80,7 +80,7 @@ public class AutoOmegaRedInsideBlockEdge extends LinearOpMode {
         robot.rightBack.setPower(REVERSE_SPEED);
         runtime.reset();
 
-        while (opModeIsActive() && (runtime.seconds() < 0.2)) {
+        while (opModeIsActive() && (runtime.seconds() < 0.1)) {
             telemetry.addData("Path", "Grabbed Block going back: %2.5f S  Elapsed", runtime.seconds());
             telemetry.update();
         }
@@ -91,7 +91,7 @@ public class AutoOmegaRedInsideBlockEdge extends LinearOpMode {
 
         StopSteering();
 
-        SpeedForward(2);
+        SpeedForward(2.5);
 
         StopSteering();
         //Turn towards foundation
@@ -161,7 +161,7 @@ public class AutoOmegaRedInsideBlockEdge extends LinearOpMode {
 
         robot.clawDC.setPower(0);
 
-        SpeedForward(1.05);
+        SpeedForward(1.25);
 
         StopSteering();
     }

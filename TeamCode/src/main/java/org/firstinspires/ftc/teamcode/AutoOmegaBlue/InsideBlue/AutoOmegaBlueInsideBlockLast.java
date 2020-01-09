@@ -67,7 +67,7 @@ public class AutoOmegaBlueInsideBlockLast extends LinearOpMode {
         SteerForSeconds(1.3);
         //Spin90Right();
         rotate(-80,0.5);
-        SteerForSeconds(0.5);
+        SteerForSeconds(0.7);
 
         rotate(80,0.5);
 
@@ -92,7 +92,7 @@ public class AutoOmegaBlueInsideBlockLast extends LinearOpMode {
         //Turn 90 Degrees to go under the alliance bridge
         //Spin90Left();
         rotate(80,0.5);
-        SpeedForward(2.25);
+        SpeedForward(3.0);
         StopSteering();
 
 
@@ -165,7 +165,7 @@ public class AutoOmegaBlueInsideBlockLast extends LinearOpMode {
 
         robot.clawDC.setPower(0);
 
-        SpeedForward(0.65);
+        SpeedForward(1.5);
 
         StopSteering();
     }

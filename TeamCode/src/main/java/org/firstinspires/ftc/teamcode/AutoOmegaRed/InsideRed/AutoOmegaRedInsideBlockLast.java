@@ -66,10 +66,10 @@ public class AutoOmegaRedInsideBlockLast extends LinearOpMode {
         SteerForSeconds(1.3);
         //Spin90Left();
         rotate(80,0.5);
-        SteerForSeconds(0.4);
+        SteerForSeconds(0.6);
 
         rotate(-80,0.5);
-        SteerForSeconds(0.3);
+        SteerForSeconds(0.7);
         StopSteering();
 
         GrabStone();
@@ -91,7 +91,7 @@ public class AutoOmegaRedInsideBlockLast extends LinearOpMode {
         rotate(-80,0.5);
 
         StopSteering();
-        SpeedForward(2.25);
+        SpeedForward(3.0);
 
         StopSteering();
         //Turn towards foundation

@@ -65,7 +65,7 @@ public class AutoOmegaBlueInsideBlockMid extends LinearOpMode {
         }
         waitForStart();
 
-        SteerForSeconds(1.4);
+        SteerForSeconds(1.7);
         StopSteering();
 
         GrabStone();
@@ -89,7 +89,7 @@ public class AutoOmegaBlueInsideBlockMid extends LinearOpMode {
 
         StopSteering();
 
-        SpeedForward(2);
+        SpeedForward(2.75);
 
         StopSteering();
         //Turn towards foundation
@@ -140,7 +140,7 @@ public class AutoOmegaBlueInsideBlockMid extends LinearOpMode {
         robot.rightBack.setPower(-0.5);
         runtime.reset();
 
-        while (opModeIsActive() && (runtime.seconds() < 0.5)) {
+        while (opModeIsActive() && (runtime.seconds() < 0.7)) {
             telemetry.addData("Path", "Go back after placing stone: %2.5f S  Elapsed", runtime.seconds());
             telemetry.update();
         }
@@ -160,7 +160,7 @@ public class AutoOmegaBlueInsideBlockMid extends LinearOpMode {
         robot.clawDC.setPower(0);
 
 
-        SpeedForward(1);
+        SpeedForward(1.75);
         StopSteering();
     }
 
