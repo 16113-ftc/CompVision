@@ -99,7 +99,7 @@ public class OmegaSquadRobot {
         capperServo = hardwareMap.servo.get("capperServo");
 
         //Set All servo motors initial position
-        clawDrop.setPosition(1);
+        clawDrop.setPosition(.9);
         foundationLeft.setPosition(1);
         foundationRight.setPosition(0);
 

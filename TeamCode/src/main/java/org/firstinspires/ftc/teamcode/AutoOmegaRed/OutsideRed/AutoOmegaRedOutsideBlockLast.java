@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.OmegaSquadRobot;
 
-@Autonomous(name = "Auto Drive Red (outside park, block last)", group = "Autonomous")
+@Autonomous(name = "Auto Red (outside park, block last)", group = "Autonomous")
 //@Disabled
 
 public class AutoOmegaRedOutsideBlockLast extends LinearOpMode {
@@ -66,7 +66,7 @@ public class AutoOmegaRedOutsideBlockLast extends LinearOpMode {
         SteerForSeconds(1.3);
         //Spin90Left();
         rotate(80,0.5);
-        SteerForSeconds(0.4);
+        SteerForSeconds(0.45);
 
         rotate(-80,0.5);
         SteerForSeconds(0.3);
@@ -81,7 +81,7 @@ public class AutoOmegaRedOutsideBlockLast extends LinearOpMode {
         robot.rightBack.setPower(REVERSE_SPEED);
         runtime.reset();
 
-        while (opModeIsActive() && (runtime.seconds() < 0.3)) {
+        while (opModeIsActive() && (runtime.seconds() < 0.2)) {
             telemetry.addData("Path", "Grabbed Block going back: %2.5f S  Elapsed", runtime.seconds());
             telemetry.update();
         }
@@ -91,7 +91,7 @@ public class AutoOmegaRedOutsideBlockLast extends LinearOpMode {
         rotate(-80,0.5);
 
         StopSteering();
-        SpeedForward(2.5);
+        SpeedForward(2.25);
 
         StopSteering();
         //Turn towards foundation
@@ -116,7 +116,7 @@ public class AutoOmegaRedOutsideBlockLast extends LinearOpMode {
         robot.rightBack.setPower(0.2);
 
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 2)) {
+        while (opModeIsActive() && (runtime.seconds() < 2.5)) {
             robot.clawGripper.setPosition(250);
             telemetry.addData("Path", "Forward to foundation: %2.5f S Elapsed", runtime.seconds());
             telemetry.update();
@@ -141,7 +141,7 @@ public class AutoOmegaRedOutsideBlockLast extends LinearOpMode {
         robot.rightBack.setPower(-1);
         runtime.reset();
 
-        while (opModeIsActive() && (runtime.seconds() < 0.8)) {
+        while (opModeIsActive() && (runtime.seconds() < 0.7)) {
             telemetry.addData("Path", "Go back after placing stone: %2.5f S  Elapsed", runtime.seconds());
             telemetry.update();
         }

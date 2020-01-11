@@ -16,6 +16,8 @@ public class TeleOpsOmega extends LinearOpMode {
     double MIN_POSITION = 0, MAX_POSITION = 1;
     double foundationLeftPosition = 1.0;
     double foundationRightPosition = 0.0;
+    double clawDropPosition = 0.7;
+    double clawGripPosition = 0.0;
 
     /**
      * This function is executed when this Op Mode is selected from the Driver Station.
@@ -24,8 +26,6 @@ public class TeleOpsOmega extends LinearOpMode {
     public void runOpMode() {
         float speed = 0.0f;
         double turnspeed = 0.0f;
-
-
 
         robot.init(hardwareMap);
 
@@ -94,21 +94,61 @@ public class TeleOpsOmega extends LinearOpMode {
                 robot.clawDC.setPower(0);
             }
 
-
-
-            if (gamepad2.a) {
-                robot.clawDrop.setPosition(-180);
+            //Pressing button a makes the claw to drop and gripper to grab block
+            if (gamepad2.a ) {
+                /*robot.clawDrop.setPosition(-180);
                 sleep(1000);
                 robot.clawGripper.setPosition(250);
                 telemetry.addData("Grabbing", gamepad2.a);
-                telemetry.update();
+                telemetry.update(); */
+                //Drop the claw
+                while (clawDropPosition > 0.1) {
+                    clawDropPosition -= .005;
+                    robot.clawDrop.setPosition(Range.clip(clawDropPosition, 0.1, 0.9));
+                    telemetry.addData("Claw Drop",
+                            "  Actual=" + robot.clawDrop.getPosition()
+                                    + "  Position=" + clawDropPosition);
+                    telemetry.update();
+                }
+                sleep(500);
+                //grab the block
+                while (clawGripPosition < MAX_POSITION)  {
+                    clawGripPosition += .005;
+                    robot.clawGripper.setPosition(Range.clip(clawGripPosition, MIN_POSITION, MAX_POSITION));
+                    telemetry.addData("Claw Grip",
+                            "  Actual=" + robot.clawGripper.getPosition()
+                                    + "  Position=" + clawGripPosition);
+                    telemetry.update();
+                }
             }
+            //Pressing button b makes the claw to bo back and gripper to release block
             if (gamepad2.b) {
+                /*
                 robot.clawGripper.setPosition(-45);
                 sleep(1000);
                 robot.clawDrop.setPosition(180);
                 telemetry.addData("Grabbing", gamepad2.b);
                 telemetry.update();
+
+                 */
+                while (clawGripPosition > MIN_POSITION)  {
+                    clawGripPosition -= .005;
+                    robot.clawGripper.setPosition(Range.clip(clawGripPosition, MIN_POSITION, MAX_POSITION));
+                    telemetry.addData("Claw Grip",
+                            "  Actual=" + robot.clawGripper.getPosition()
+                                    + "  Position=" + clawGripPosition);
+                    telemetry.update();
+                }
+                sleep(500);
+                while (clawDropPosition < 0.9) {
+                    clawDropPosition += .005;
+                    robot.clawDrop.setPosition(Range.clip(clawDropPosition, 0.1, 0.9));
+                    telemetry.addData("Claw Drop",
+                            "  Actual=" + robot.clawDrop.getPosition()
+                                    + "  Position=" + clawDropPosition);
+                    telemetry.update();
+                }
+
             }
 
 
@@ -139,12 +179,7 @@ public class TeleOpsOmega extends LinearOpMode {
                         "  Actual(right)=" + robot.foundationRight.getPosition()
                                 + "  Position(right)=" + foundationRightPosition);
                 telemetry.update();
-
-
-
             }
-
-
 
             if(foundationLeftPosition < MAX_POSITION && gamepad2.y && foundationRightPosition > MIN_POSITION) {
                 foundationLeftPosition += .1;
@@ -160,13 +195,10 @@ public class TeleOpsOmega extends LinearOpMode {
                         "  Actual(right)=" + robot.foundationRight.getPosition()
                                 + "  Position(right)=" + foundationRightPosition);
                 telemetry.update();
-
-
             }
 
             if (gamepad2.left_bumper) {
                 robot.capperServo.setPosition(0);
-
             }
 
             if (gamepad2.right_bumper) {
@@ -174,8 +206,6 @@ public class TeleOpsOmega extends LinearOpMode {
             }
 
             idle();
-
-
         }
 
 

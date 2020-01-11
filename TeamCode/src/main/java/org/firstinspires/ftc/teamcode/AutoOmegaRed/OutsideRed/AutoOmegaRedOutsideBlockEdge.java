@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.OmegaSquadRobot;
 
-@Autonomous(name = "Auto Drive Red (outside park, block edge)", group = "Autonomous")
+@Autonomous(name = "Auto Red (outside park, block edge)", group = "Autonomous")
 //@Disabled
 public class AutoOmegaRedOutsideBlockEdge extends LinearOpMode {
     //1.5 seconds of spinning at 0.75 = 2 ft.
@@ -64,7 +64,7 @@ public class AutoOmegaRedOutsideBlockEdge extends LinearOpMode {
 
         SteerForSeconds(0.4);
         rotate(-80,0.5);
-        SteerForSeconds(0.6);
+        SteerForSeconds(0.5);
 
         rotate(80,0.5);
         SteerForSeconds(1.2);
@@ -91,7 +91,7 @@ public class AutoOmegaRedOutsideBlockEdge extends LinearOpMode {
 
         StopSteering();
 
-        SpeedForward(2.25);
+        SpeedForward(2);
 
         StopSteering();
         //Turn towards foundation
@@ -142,7 +142,7 @@ public class AutoOmegaRedOutsideBlockEdge extends LinearOpMode {
         robot.rightBack.setPower(-1);
         runtime.reset();
 
-        while (opModeIsActive() && (runtime.seconds() < 0.8)) {
+        while (opModeIsActive() && (runtime.seconds() < 0.7)) {
             telemetry.addData("Path", "Go back after placing stone: %2.5f S  Elapsed", runtime.seconds());
             telemetry.update();
         }

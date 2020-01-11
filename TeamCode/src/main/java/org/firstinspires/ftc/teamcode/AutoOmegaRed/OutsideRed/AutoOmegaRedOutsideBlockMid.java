@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.OmegaSquadRobot;
 
-@Autonomous(name = "Auto Drive Red (outside park, block mid)", group = "Autonomous")
+@Autonomous(name = "Auto Red (outside park, block mid)", group = "Autonomous")
 //@Disabled
 public class AutoOmegaRedOutsideBlockMid extends LinearOpMode {
     //1.5 seconds of spinning at 0.75 = 2 ft.
@@ -85,7 +85,7 @@ public class AutoOmegaRedOutsideBlockMid extends LinearOpMode {
 
         StopSteering();
 
-        SpeedForward(2.5);
+        SpeedForward(2.25);
 
         StopSteering();
         //Turn towards foundation
@@ -110,7 +110,7 @@ public class AutoOmegaRedOutsideBlockMid extends LinearOpMode {
         robot.rightBack.setPower(0.2);
 
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 2)) {
+        while (opModeIsActive() && (runtime.seconds() < 2.5)) {
             robot.clawGripper.setPosition(250);
             telemetry.addData("Path", "Forward to foundation: %2.5f S Elapsed", runtime.seconds());
             telemetry.update();
@@ -153,7 +153,7 @@ public class AutoOmegaRedOutsideBlockMid extends LinearOpMode {
 
         robot.clawDC.setPower(0);
 
-        SpeedForward(1.25);
+        SpeedForward(1.1);
 
         StopSteering();
     }

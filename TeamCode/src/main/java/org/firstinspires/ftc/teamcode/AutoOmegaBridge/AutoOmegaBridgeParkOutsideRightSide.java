@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.OmegaSquadRobot;
 
-@Autonomous(name = "Auto Drive Bridge Park (right) (outside)", group = "Autonomous")
+@Autonomous(name = "Auto Bridge Park (right) (outside)", group = "Autonomous")
 //@Disabled
 public class AutoOmegaBridgeParkOutsideRightSide extends LinearOpMode {
     //1.5 seconds of spinning at 0.75 = 2 ft.

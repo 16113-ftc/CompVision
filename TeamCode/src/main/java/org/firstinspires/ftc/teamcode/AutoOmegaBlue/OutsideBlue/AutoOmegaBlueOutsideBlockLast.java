@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.OmegaSquadRobot;
 
-@Autonomous(name = "Auto Drive Blue (outside park, block last)", group = "Autonomous")
+@Autonomous(name = "Auto Blue (outside park, block last)", group = "Autonomous")
 //@Disabled
 public class AutoOmegaBlueOutsideBlockLast extends LinearOpMode {
     //1.5 seconds of spinning at 0.75 = 2 ft.
@@ -91,7 +91,7 @@ public class AutoOmegaBlueOutsideBlockLast extends LinearOpMode {
 
         StopSteering();
 
-        SpeedForward(2.75);
+        SpeedForward(2.45);
 
         StopSteering();
         //Turn towards foundation
@@ -147,7 +147,7 @@ public class AutoOmegaBlueOutsideBlockLast extends LinearOpMode {
             telemetry.update();
         }
 
-        rotate(-80,0.5);
+        rotate(-82,0.5);
         //Spin90Right();
 
         StopSteering();

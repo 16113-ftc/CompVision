@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.OmegaSquadRobot;
 
-@Autonomous(name = "Auto Drive Blue (inside park, block edge)", group = "Autonomous")
+@Autonomous(name = "Auto Blue (inside park, block edge)", group = "Autonomous")
 //@Disabled
 public class AutoOmegaBlueInsideBlockEdge extends LinearOpMode {
     //1.5 seconds of spinning at 0.75 = 2 ft.
@@ -68,7 +69,7 @@ public class AutoOmegaBlueInsideBlockEdge extends LinearOpMode {
         rotate(80,0.5);
         SteerForSeconds(0.5);
 
-        rotate(-80,0.7);
+        rotate(-80,0.5);
         SteerForSeconds(1);
 
         StopSteering();
@@ -94,7 +95,7 @@ public class AutoOmegaBlueInsideBlockEdge extends LinearOpMode {
 
         StopSteering();
 
-        SpeedForward(2.75);
+        SpeedForward(2.25);
 
         StopSteering();
         //Turn towards foundation
@@ -128,12 +129,12 @@ public class AutoOmegaBlueInsideBlockEdge extends LinearOpMode {
 
         StopSteering();
 
-        runtime.reset();
+         runtime.reset();
         while (opModeIsActive() && runtime.seconds() < 1) {
             //stone released
             robot.clawGripper.setPosition(-45);
             sleep(1000);
-            robot.clawDrop.setPosition(180);
+            robot.clawDrop.setPosition(Range.clip(.9, 0.1, 0.9));
             telemetry.addData("Release  stone: 2.5f S Elapsed", runtime.seconds());
             telemetry.update();
 
@@ -167,9 +168,6 @@ public class AutoOmegaBlueInsideBlockEdge extends LinearOpMode {
         SpeedForward(1.2);
         StopSteering();
     }
-
-
-
 
     private void SteerForSeconds(double time) {
         robot.leftFront.setPower(FORWARD_SPEED);
@@ -246,22 +244,17 @@ public class AutoOmegaBlueInsideBlockEdge extends LinearOpMode {
             telemetry.addData("Path", "shuffle right %2.5f S Elapsed", runtime.seconds());
             telemetry.update();
         }
-
-
-
-
     }
+
     private void GrabStone() {
         runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 1.5)
-        {
-            robot.clawDrop.setPosition(-180);
+        while (opModeIsActive() && runtime.seconds() < 1.5) {
+            robot.clawDrop.setPosition(Range.clip(0.1, .1, 0.9));
             telemetry.addData("Claw Drop", "-180");
             telemetry.update();
         }
         runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 1.3)
-        {
+        while (opModeIsActive() && runtime.seconds() < 1.3) {
             robot.clawGripper.setPosition(250);
             telemetry.addData("Claw Grip", "250");
             telemetry.update();
